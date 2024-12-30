@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://charts.sysdig.com
     targetRevision: "1.72.5"  # Specify the desired chart version
-    path: sysdig/sysdig-deploy
+    path: apps
     helm:
       values: |
         global:
