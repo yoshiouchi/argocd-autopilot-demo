@@ -1,0 +1,65 @@
+apiVersion: apps.argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sysdig-deploy
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: sysdig-agent
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    repoURL: https://charts.sysdig.com
+    targetRevision: "1.72.5"  # Specify the desired chart version
+    path: sysdig/sysdig-deploy
+    helm:
+      values: |
+        global:
+          clusterConfig:
+            name: yoshi-home-lab
+          sysdig:
+            region: au1
+            accessKeySecret: sysdig-access-key
+          kspm:
+            deploy: true
+        nodeAnalyzer:
+          enabled: true
+          nodeAnalyzer:
+            benchmarkRunner:
+              deploy: false
+            hostAnalyzer:
+              deploy: false
+            runtimeScanner:
+              deploy: false
+            imageAnalyzer:
+              deploy: false
+            hostScanner:
+              deploy: true
+        kspmCollector:
+          enabled: false
+        admissionController:
+          enabled: false
+        clusterShield:
+          enabled: true
+          cluster_shield:
+            log_level: warn
+            features:
+              audit:
+                enabled: true
+              container_vulnerability_management:
+                enabled: true
+              posture:
+                enabled: true
+          podAnnotations:
+            prometheus.io/scrape: 'true'
+            prometheus.io/port: '8080'
+            prometheus.io/path: '/metrics'
+        agent:
+          sysdig:
+            settings:
+              prometheus_exporter:
+                enabled: true
+                export_health_metrics: true
+  syncPolicy:
+    manual: {}
