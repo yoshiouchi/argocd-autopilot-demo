@@ -2,7 +2,7 @@ apiVersion: apps.argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: sysdig-deploy
-  namespace: argocd
+  namespace: sysdig-agent
 spec:
   destination:
     name: ''
