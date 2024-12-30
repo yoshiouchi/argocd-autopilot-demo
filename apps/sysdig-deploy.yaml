@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: https://charts.sysdig.com
-    targetRevision: "1.72.5"  # Specify the desired chart version
+    targetRevision: "1.66.8"  # Specify the desired chart version
     path: apps
     helm:
       values: |
